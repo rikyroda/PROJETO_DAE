@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="./templates/skeleton.xhtml">
+        <ui:define name="title">ACADEMIC MANAGEMENT</ui:define>
+
+        <ui:define name="main">
+
+            <p:dataTable
+                var="student"
+                summary="List of all students"
+                value="#{administratorManager.allStudents}">
+
+                <f:facet name="header">
+                    <h:outputText value="Students" />
+                </f:facet>            
+
+                <p:column headerText="Username">
+                    <h:outputText value="${student.username}" />
+                </p:column>
+
+                <p:column headerText="Name">
+                    <h:outputText value="${student.name}" />
+                </p:column>
+
+                <p:column headerText="Email">
+                    <h:outputText value="${student.email}" />
+                </p:column>                     
+
+                <p:column headerText="Course">
+                    <h:outputText value="${student.courseName}" />
+                </p:column>                      
+
+                <p:column headerText="Actions">
+                    <h:form>
+                        <h:commandLink value="Details" action="admin_students_details?faces-redirect=true">
+                            <f:setPropertyActionListener target="#{administratorManager.currentStudent}" value="#{student}" />
+                        </h:commandLink>
+                        &nbsp;
+                        <h:commandLink value="Update" action="admin_students_update?faces-redirect=true">
+                            <f:setPropertyActionListener target="#{administratorManager.currentStudent}" value="#{student}" />
+                        </h:commandLink>
+                        &nbsp;
+                        <h:commandLink value="Remove" actionListener="#{administratorManager.removeStudent}">
+                            <f:param name="studentUsername" id="studentUsername" value="#{student.username}" />
+                        </h:commandLink>
+                    </h:form>
+                </p:column>                        
+
+            </p:dataTable>
+
+            <br/>
+            <br/>
+
+            <h:link value="New student" outcome="admin_students_create" class="btn btn-primary"/>
+
+            <br/>
+            <br/>       
+
+            <p:dataTable
+                var="course"
+                summary="List of all courses"
+                value="#{administratorManager.allCourses}">
+
+                <f:facet name="header">
+                    <h:outputText value="Courses" />
+                </f:facet>                        
+
+                <p:column headerText="Code">
+                    <h:outputText value="${course.code}" />
+                </p:column>
+
+                <p:column headerText="CourseName">
+                    <h:outputText value="${course.name}" />
+                </p:column>
+
+                <p:column headerText="Actions">
+                    <h:form>
+                        <h:commandLink value="Details" action="admin_courses_details?faces-redirect=true">
+                            <f:setPropertyActionListener target="#{administratorManager.currentCourse}" value="#{course}" />
+                        </h:commandLink>
+                        &nbsp;
+                        <h:commandLink value="Remove" actionListener="#{administratorManager.removeCourse}">
+                            <f:param name="courseCode" id="courseCode" value="#{course.code}" />
+                        </h:commandLink>
+                    </h:form>
+                </p:column>                        
+
+            </p:dataTable>
+
+            <br/>
+            <br/>
+
+
+            <h:link value="New course" outcome="admin_courses_create" class="btn btn-primary"/>
+
+            <br/>
+            <br/>
+
+            <h:messages errorStyle="color: red" />
+
+            <h:outputScript library="js" name="bootstrap.min.js"/>
+
+        </ui:define>
+    </ui:composition>
+</html>
